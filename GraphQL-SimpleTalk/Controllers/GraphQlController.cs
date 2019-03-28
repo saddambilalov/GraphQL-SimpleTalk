@@ -10,17 +10,17 @@ namespace GraphQL_SimpleTalk.Controllers
     [Route(Startup.GraphQlPath)]
     public class GraphQlController : Controller
     {
-        readonly BlogService blogService;
+        private readonly IBlogService _blogService;
 
-        public GraphQlController(BlogService blogService)
+        public GraphQlController(IBlogService blogService)
         {
-            this.blogService = blogService;
+            _blogService = blogService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GraphQlQuery query)
         {
-            var schema = new Schema { Query = new AuthorQuery(blogService) };
+            var schema = new Schema { Query = new AuthorQuery(_blogService) };
 
             var result = await new DocumentExecuter().ExecuteAsync(x =>
             {

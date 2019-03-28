@@ -7,35 +7,35 @@ namespace GraphQL_SimpleTalk.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly BlogService blogService;
+        private readonly IBlogService _blogService;
 
-        public AuthorsController(BlogService blogService)
+        public AuthorsController(IBlogService blogService)
         {
-            this.blogService = blogService;
+            _blogService = blogService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return new ObjectResult(blogService.GetAllAuthors());
+            return new ObjectResult(_blogService.GetAllAuthors());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetAuthorById(int id)
         {
-            return new ObjectResult(blogService.GetAuthorById(id));
+            return new ObjectResult(_blogService.GetAuthorById(id));
         }
 
         [HttpGet("{id}/posts")]
         public IActionResult GetPostsByAuthor(int id)
         {
-            return new ObjectResult(blogService.GetPostsByAuthor(id));
+            return new ObjectResult(_blogService.GetPostsByAuthor(id));
         }
 
         [HttpGet("{id}/socials")]
         public IActionResult GetSocialsByAuthor(int id)
         {
-            return new ObjectResult(blogService.GetSNsByAuthor(id));
+            return new ObjectResult(_blogService.GetSNsByAuthor(id));
         }
     }
 }

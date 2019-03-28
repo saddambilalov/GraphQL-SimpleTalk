@@ -5,15 +5,20 @@ using System.Linq;
 
 namespace GraphQL_SimpleTalk.Services
 {
-    public class BlogService
+    public class BlogService : IBlogService
     {
-        private readonly List<Author> authors = new List<Author>();
-        private readonly List<Post> posts = new List<Post>();
-        private readonly List<SocialNetwork> sns = new List<SocialNetwork>();
+        private readonly List<Author> _authors = new List<Author>();
+        private readonly List<Post> _posts = new List<Post>();
+        private readonly List<SocialNetwork> _sns = new List<SocialNetwork>();
         
         public BlogService()
         {
-            Author DinoEsposito = new Author
+            Build();
+        }
+
+        private void Build()
+        {
+            var dinoEsposito = new Author
             {
                 Id = 1,
                 Name = "Dino Esposito",
@@ -22,7 +27,7 @@ namespace GraphQL_SimpleTalk.Services
                 ProfileUrl = "https://www.red-gate.com/simple-talk/author/dino-esposito/"
             };
 
-            Author LanceTalbert = new Author
+            var lanceTalbert = new Author
             {
                 Id = 2,
                 Name = "Lance Talbert",
@@ -31,103 +36,102 @@ namespace GraphQL_SimpleTalk.Services
                 ProfileUrl = "https://www.red-gate.com/simple-talk/author/lancetalbert/"
             };
 
-            authors.Add(DinoEsposito);
-            authors.Add(LanceTalbert);
+            _authors.Add(dinoEsposito);
+            _authors.Add(lanceTalbert);
 
-            Comment comment1 = new Comment
+            var comment1 = new Comment
             {
                 Url = "https://#",
                 Description = "Bla bla bla",
                 Count = 1
             };
 
-            Comment comment2 = new Comment
+            var comment2 = new Comment
             {
                 Url = "https://#",
                 Description = "Bla bla bla",
                 Count = 4
             };
 
-            Rating rating1 = new Rating
+            var rating1 = new Rating
             {
                 Percent = 98,
                 Count = 1
             };
 
-            Rating rating2 = new Rating
+            var rating2 = new Rating
             {
                 Percent = 95,
                 Count = 5
             };
 
-            Post FormsInVanilla = new Post
+            var formsInVanilla = new Post
             {
                 Id = 1,
                 Title = "Building Better HTML Forms in Vanilla-JS",
                 Description = "Creating forms is one of the most basic skills for a web developer...",
                 Date = DateTime.Today,
                 Url = "https://www.red-gate.com/simple-talk/dotnet/net-development/building-better-html-forms-in-vanilla-js/",
-                Author = DinoEsposito,
-                Comments = new List<Comment>() { comment1 },
+                Author = dinoEsposito,
+                Comments = new List<Comment> {comment1},
                 Rating = rating1,
-                Categories = new string[] { ".NET Development" }
+                Categories = new[] {".NET Development"}
             };
 
-            Post VoiceCommands = new Post
+            var voiceCommands = new Post
             {
                 Id = 2,
                 Title = "Voice Commands in Unity",
                 Description = "Today, we use voice in many ways. We can order groceries...",
                 Date = DateTime.Today,
                 Url = "https://www.red-gate.com/simple-talk/dotnet/c-programming/voice-commands-in-unity/",
-                Author = LanceTalbert,
-                Comments = new List<Comment>() { comment2 },
+                Author = lanceTalbert,
+                Comments = new List<Comment> {comment2},
                 Rating = rating2,
-                Categories = new string[] { "C# programming" }
+                Categories = new[] {"C# programming"}
             };
 
-            posts.Add(FormsInVanilla);
-            posts.Add(VoiceCommands);
+            _posts.Add(formsInVanilla);
+            _posts.Add(voiceCommands);
 
-            SocialNetwork sn1 = new SocialNetwork()
+            var sn1 = new SocialNetwork
             {
                 Type = SNType.INSTAGRAM,
-                Author = DinoEsposito,
+                Author = dinoEsposito,
                 NickName = "@dino",
                 Url = "https://#"
             };
 
-            SocialNetwork sn2 = new SocialNetwork()
+            var sn2 = new SocialNetwork
             {
                 Type = SNType.TWITTER,
-                Author = DinoEsposito,
+                Author = dinoEsposito,
                 NickName = "@dino",
                 Url = "https://#"
             };
 
-            sns.Add(sn1);
-            sns.Add(sn2);
+            _sns.Add(sn1);
+            _sns.Add(sn2);
         }
 
-        public List<Author> GetAllAuthors()
+        public IList<Author> GetAllAuthors()
         {
-            return this.authors;
+            return _authors;
         }
 
         public Author GetAuthorById(int id)
         {
-            return authors.Where(author => author.Id == id).FirstOrDefault<Author>();
+            return _authors.FirstOrDefault(author => author.Id == id);
         }
 
-        public List<Post> GetPostsByAuthor(int id)
+        public IList<Post> GetPostsByAuthor(int id)
         {
-            return posts.Where(post => post.Author.Id == id).ToList<Post>();
+            return _posts.Where(post => post.Author.Id == id).ToList();
         }
 
-        public List<SocialNetwork> GetSNsByAuthor(int id)
+        public IList<SocialNetwork> GetSNsByAuthor(int id)
         {
-            return sns.Where(sn => sn.Author.Id == id).ToList<SocialNetwork>();
+            return _sns.Where(sn => sn.Author.Id == id).ToList();
         }
-
     }
 }
